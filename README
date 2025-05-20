@@ -1,0 +1,91 @@
+# YouTube Trending Video Data Analysis
+
+## Overview
+This project retrieves, transforms, and visualizes trending YouTube video data from Kaggle. It downloads the dataset, enriches it with video category names, and plots the top categories by total views.
+
+## Features
+- Downloads the latest dataset files from Kaggle automatically
+- Transforms raw CSV and JSON data to add descriptive category names
+- Generates a bar plot for the top 10 video categories by views
+- Includes structured logging for easy debugging and monitoring
+
+## Project Structure
+/data
+    /raw # Raw downloaded files (CSV, JSON)
+    /processed # Output plots and processed data
+retriever.py # Dataset retrieval module
+transformer.py # Data transformation module
+graph.py # Plotting module
+main.py # Orchestrates the workflow
+/tests
+    /test_retriever.py
+    /test_transformer.py
+    /test_graph.py
+
+## Setup
+1. Install Python 3.8+
+2. Install dependencies:
+   pip install kaggle pandas matplotlib seaborn
+
+Configure Kaggle API credentials as per Kaggle documentation
+
+Usage
+Run the main script to execute the full pipeline:
+
+python main.py
+This will:
+
+Download the dataset
+
+Transform the data
+
+Generate and save the top categories plot in data/processed/
+
+Testing
+Run tests using pytest:
+
+pytest tests/
+License
+This project is licensed under the CC0-1.0 License.
+
+Architecture Decision Record (ADR)
+ADR-001: Choosing Data Retrieval Method
+Context:
+We need to download datasets from Kaggle programmatically to ensure reproducibility and automation.
+
+Decision:
+Use Kaggle's official Python API kaggle.api for authentication and downloading datasets directly, avoiding subprocess calls to kaggle CLI.
+
+Consequences:
+
+Simplifies dependency management.
+
+Improves integration within Python scripts.
+
+Relies on Kaggle API support and rate limits.
+
+ADR-002: Data Transformation Strategy
+Context:
+The dataset includes video statistics CSV files and separate JSON files mapping category IDs to names.
+
+Decision:
+Transform data by loading the CSV with pandas, parse the JSON category mapping, then enrich the dataframe with readable category names.
+
+Consequences:
+
+Keeps transformation modular and testable.
+
+Allows easy extension for other data enrichments.
+
+ADR-003: Plotting and Visualization
+Context:
+We want to provide quick insights on the dataset's category popularity.
+
+Decision:
+Use seaborn and matplotlib to generate a bar plot of top 10 categories by total views.
+
+Consequences:
+
+Provides a clear, visual summary of data.
+
+Plot saved to disk for later use in reports or dashboards.
